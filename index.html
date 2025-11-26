@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Fecha Correcta</title>
+
+<style>
+/* ==================== ESTILO GENERAL ==================== */
+:root{
+  --bg1: #ffd6e8;
+  --bg2: #ffb7d3;
+  --pink: #ff4fa3;
+  --pink-2: #ff7ec7;
+  --accent: #ff2f89;
+  --text: #a02c62;
+}
+
+html,body{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(var(--bg1), var(--bg2));
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 18px);
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 0;
+  margin-bottom: 18px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e6347e;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 20;
+  padding: 0 12px;
+  line-height: 1.1;
+}
+
+.main-wrap {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 18px 36px;
+  box-sizing: border-box;
+}
+
+/* ==================== CANDADO ==================== */
+
+.lock-container {
+  margin-top: 70px;  /* <<<<<< AQUI LO BAJE MUCHO MÁS */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.candado {
+  width: 260px;
+  height: 260px;
+  background: var(--pink);
+  border-radius: 50% 50% 45% 45%;
+  position: relative;
+  box-shadow: inset -6px -10px 18px rgba(255,255,255,0.6),
+              inset 6px 6px 18px rgba(0,0,0,0.2),
+              0 10px 20px rgba(0,0,0,0.25);
+  transition: transform 0.6s ease;
+}
+
+.arco {
+  width: 170px;
+  height: 170px;
+  border-radius: 90px;
+  border: 20px solid var(--pink-2);
+  border-bottom-color: transparent;
+  position: absolute;
+  top: -105px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 0.6s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2),
+              inset 0 4px 12px rgba(255,255,255,0.5);
+}
+
+.open .arco {
+  top: -180px;
+  transform: translateX(-50%) rotate(-25deg);
+}
+
+/* ==================== Diales ==================== */
+
+.dials {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+}
+
+.dial {
+  background: white;
+  width: 60px;
+  padding: 10px;
+  border-radius: 16px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.15),
+              0 4px 12px rgba(0,0,0,0.18);
+  text-align: center;
+}
+
+.dial button {
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.number {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 5px 0;
+  color: var(--accent);
+}
+
+/* ==================== PISTA ==================== */
+
+.pista {
+  margin-top: 140px;
+  font-size: 18px;
+  color: var(--text);
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* ==================== BOTÓN ==================== */
+
+#nextBtn {
+  margin-top: 18px;
+  background: var(--accent);
+  color: white;
+  padding: 12px 36px;
+  border: none;
+  border-radius: 14px;
+  font-size: 19px;
+  opacity: 0.5;
+  cursor: not-allowed;
+  transition: 0.3s;
+  box-shadow: 0 6px 15px rgba(255, 50, 120, 0.4);
+}
+
+#nextBtn.enabled {
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 480px) {
+
+  .candado {
+    width: 180px;
+    height: 180px;
+  }
+
+  .arco {
+    width: 120px;
+    height: 120px;
+    top: -85px;
+    border-width: 14px;
+  }
+
+  .lock-container {
+    margin-top: 90px; /* BAJADO MÁS EN CELULAR */
+  }
+
+  .dials {
+    bottom: 22px;
+    gap: 10px;
+  }
+
+  .number {
+    font-size: 18px;
+  }
+
+  .pista {
+    margin-top: 110px;
+    font-size: 16px;
+  }
+
+  #nextBtn {
+    padding: 10px 26px;
+    font-size: 17px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-wrap">
+  <div class="lock-container">
+
+    <div class="candado" id="candado">
+      <div class="arco"></div>
+
+      <div class="dials">
+
+        <div class="dial">
+          <button onclick="changeValue('day', 1)">▲</button>
+          <div id="day" class="number">01</div>
+          <button onclick="changeValue('day', -1)">▼</button>
+        </div>
+
+        <div class="dial">
+          <button onclick="changeValue('month', 1)">▲</button>
+          <div id="month" class="number">01</div>
+          <button onclick="changeValue('month', -1)">▼</button>
+        </div>
+
+        <div class="dial">
+          <button onclick="changeValue('year', 1)">▲</button>
+          <div id="year" class="number">00</div>
+          <button onclick="changeValue('year', -1)">▼</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pista">Pista: La fecha en que nos conocimos 💗</div>
+
+  <button id="nextBtn" onclick="openLock()">Siguiente</button>
+</div>
+
+<script>
+function changeValue(id, change) {
+  let element = document.getElementById(id);
+  let value = parseInt(element.innerText);
+
+  value += change;
+
+  if (id === "day") {
+    if (value < 1) value = 31;
+    if (value > 31) value = 1;
+  }
+
+  if (id === "month") {
+    if (value < 1) value = 12;
+    if (value > 12) value = 1;
+  }
+
+  if (id === "year") {
+    if (value < 0) value = 99;
+    if (value > 99) value = 0;
+  }
+
+  element.innerText = value.toString().padStart(2, "0");
+
+  validate();
+}
+
+function validate() {
+  const d = document.getElementById("day").innerText;
+  const m = document.getElementById("month").innerText;
+  const y = document.getElementById("year").innerText;
+
+  const btn = document.getElementById("nextBtn");
+
+  if (d === "04" && m === "07" && y === "20") {
+    btn.classList.add("enabled");
+  } else {
+    btn.classList.remove("enabled");
+  }
+}
+
+function openLock() {
+  const btn = document.getElementById("nextBtn");
+  const lock = document.getElementById("candado");
+
+  if (!btn.classList.contains("enabled")) return;
+
+  lock.classList.add("open");
+
+  setTimeout(() => {
+    window.location.href = "cumple.html";
+  }, 900);
+}
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Te la dedico</title>
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --bg:#ffccf5;
+      --card:#ffe6f7;
+      --accent:#ff4fbd;
+      --accent2:#ff8fe6;
+      --muted:#7a7a7a;
+    }
+
+    body{
+      background: linear-gradient(180deg,#ffb3ef,#ffd9f7);
+      color:#4a0040;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .player{
+      width:100%;
+      max-width:900px;
+      background:var(--card);
+      border-radius:18px;
+      padding:25px;
+      display:grid;
+      grid-template-columns:260px 1fr;
+      gap:30px;
+      box-shadow:0 12px 40px rgba(255,0,170,.3);
+    }
+
+    .disc-wrap{
+      text-align:center;
+    }
+    .disc{
+      width:230px;
+      height:230px;
+      border-radius:50%;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff;
+      margin:auto;
+      box-shadow:0 0 25px rgba(255,0,170,.4);
+    }
+    .disc img{
+      width:80%;
+      height:80%;
+      border-radius:50%;
+      object-fit:cover;
+      animation:spin 10s linear infinite;
+    }
+    .paused img{
+      animation-play-state:paused;
+    }
+
+    @keyframes spin{
+      from{transform:rotate(0deg)}
+      to{transform:rotate(360deg)}
+    }
+
+    .meta-small h3{
+      margin-top:15px;
+      font-size:19px;
+      font-weight:bold;
+    }
+    .meta-small p{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .controls{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:20px;
+    }
+    .track-info .title{
+      font-size:22px;
+      font-weight:bold;
+      color:#a3007a;
+    }
+    .track-info .artist{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .progress{
+      width:100%;
+      height:10px;
+      border-radius:10px;
+      background:#ffd2f5;
+      cursor:pointer;
+      position:relative;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background:var(--accent);
+      border-radius:10px;
+    }
+
+    .time-row{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .buttons{
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      margin-top:10px;
+    }
+
+    .btn{
+      width:55px;
+      height:55px;
+      background:#ffdaf7;
+      border:none;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:0.2s;
+      color:#a3007a;
+      font-size:20px;
+      box-shadow:0 4px 10px rgba(255,0,170,.3);
+    }
+
+    .btn:hover{
+      transform:scale(1.1);
+      background:#ffe8fb;
+    }
+
+    .btn.play{
+      width:70px;
+      height:70px;
+      background:var(--accent);
+      color:white;
+      font-weight:bold;
+      border-radius:50%;
+      transition:.2s;
+      box-shadow:0 4px 12px rgba(255,0,170,.5);
+    }
+    .btn.play:hover{
+      transform:scale(1.1);
+      background:var(--accent2);
+    }
+
+    .vol input{
+      width:140px;
+    }
+
+    @media(max-width:750px){
+      .player{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding:20px;
+      }
+      .disc{
+        width:180px;
+        height:180px;
+      }
+      .controls{
+        align-items:center;
+      }
+      .track-info .title{
+        font-size:20px;
+      }
+      .vol input{
+        width:180px;
+      }
+      .buttons{
+        gap:15px;
+      }
+      .btn{
+        width:50px;
+        height:50px;
+        font-size:18px;
+      }
+      .btn.play{
+        width:60px;
+        height:60px;
+      }
+    }
+
+    @media(max-width:450px){
+      .disc{
+        width:150px;
+        height:150px;
+      }
+      .player{
+        padding:15px;
+      }
+      .buttons{
+        gap:12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="player">
+
+    <div class="disc-wrap">
+      <div class="disc paused" id="disc">
+        <img id="cover" src="/images/,.png" alt="Portada">
+      </div>
+      <div class="meta-small">
+        <h3>TE AMO</h3>
+        <p>FLAQUITA </p>
+      </div>
+    </div>
+
+    <div class="controls">
+
+      <div class="track-info">
+        <div>
+          <div class="title">Tiroteo</div>
+          <div class="artist">Artista desconocido</div>
+        </div>
+        <div class="vol">
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+        </div>
+      </div>
+
+      <div class="progress" id="progress">
+        <div class="bar" id="bar"></div>
+      </div>
+
+      <div class="time-row">
+        <span id="current">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+
+      <div class="buttons">
+        <button class="btn" id="prev">⏮</button>
+        <button class="btn play" id="play">▶️</button>
+        <button class="btn" id="next">⏭</button>
+      </div>
+
+      <audio id="audio" src="music/tiroteo.mp3"></audio>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("play");
+    const disc = document.getElementById("disc");
+    const progress = document.getElementById("progress");
+    const bar = document.getElementById("bar");
+    const currentEl = document.getElementById("current");
+    const durationEl = document.getElementById("duration");
+    const volume = document.getElementById("volume");
+
+    playBtn.onclick = () => {
+      if (audio.paused) audio.play();
+      else audio.pause();
+    };
+
+    audio.addEventListener("loadedmetadata", () => {
+      if (!isNaN(audio.duration)) {
+        durationEl.textContent = format(audio.duration);
+      }
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        bar.style.width = percent + "%";
+        currentEl.textContent = format(audio.currentTime);
+      }
+    });
+
+    progress.onclick = (e) => {
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        const x = e.offsetX / progress.clientWidth;
+        audio.currentTime = x * audio.duration;
+      }
+    };
+
+    audio.onplay = () => {
+
+      // 🔥 FIX REAL del bug del tiempo inicial 0:05 / 5:21  
+      if (audio.currentTime < 0.3) audio.currentTime = 0;
+
+      disc.classList.remove("paused");
+      playBtn.textContent = "⏸";
+    };
+
+    audio.onpause = () => {
+      disc.classList.add("paused");
+      playBtn.textContent = "▶️";
+    };
+
+    volume.oninput = () => {
+      audio.volume = volume.value;
+    };
+
+    document.getElementById("prev").onclick = () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    };
+    document.getElementById("next").onclick = () => {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+    };
+
+    function format(sec) {
+      if (isNaN(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60).toString().padStart(2, "0");
+      return `${m}:${s}`;
+    }
+  </script>
+
+</body>
+</html>
